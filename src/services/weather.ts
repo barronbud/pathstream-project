@@ -1,5 +1,7 @@
 import type { Location, Weather } from "../types";
 
+const API_NINJAS_API_KEY = import.meta.env.VITE_API_NINJAS_API_KEY;
+
 interface Coordinates {
     latitude: number;
     longitude: number;
@@ -10,7 +12,7 @@ export async function fetchCoordinates(location: Location): Promise<Coordinates>
         `https://api.api-ninjas.com/v1/geocoding?city=${location.city}&country=${location.country}`,
         {
             headers: {
-                "X-Api-Key": import.meta.env.VITE_API_NINJAS_API_KEY,
+                "X-Api-Key": API_NINJAS_API_KEY,
             },
         }
     );
@@ -31,7 +33,7 @@ export async function fetchWeather(coordinates: Coordinates): Promise<Weather> {
         `https://api.api-ninjas.com/v1/weather?lat=${coordinates.latitude}&lon=${coordinates.longitude}`,
         {
             headers: {
-                "X-Api-Key": import.meta.env.VITE_API_NINJAS_API_KEY,
+                "X-Api-Key": API_NINJAS_API_KEY,
             },
         }
     );
