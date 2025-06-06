@@ -1,68 +1,34 @@
 import { useEffect, useState } from "react";
 import type { Location, Weather } from "../types";
+import { fetchCoordinates, fetchWeather } from "../services/weather";
 
 export default function WeatherPanel({ location }: { location: Location }) {
     const [weather, setWeather] = useState<Weather | null>(null);
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState("");
 
     useEffect(() => {
-        const fetchWeatherData = async () => {
-            try {
-                setIsLoading(true);
-                setError("");
+        if (!location) {
+            setWeather(null);
+            setError("");
+            setIsLoading(false);
+            return;
+        }
 
-                // Fetch coordinates
-                const response = await fetch(
-                    `https://api.api-ninjas.com/v1/geocoding?city=${location.city}&country=${location.country}`,
-                    {
-                        headers: {
-                            "X-Api-Key": import.meta.env
-                                .VITE_API_NINJAS_API_KEY,
-                        },
-                    }
-                );
-                const data = await response.json();
+        setIsLoading(true);
+        setError("");
+        setWeather(null);
 
-                if (!data || !data[0]) {
-                    setError("Location not found");
-                    setIsLoading(false);
-                    return;
-                }
-
-                const { latitude, longitude } = data[0];
-
-                // Fetch weather with coordinates
-                const weatherResponse = await fetch(
-                    `https://api.api-ninjas.com/v1/weather?lat=${latitude}&lon=${longitude}`,
-                    {
-                        headers: {
-                            "X-Api-Key": import.meta.env
-                                .VITE_API_NINJAS_API_KEY,
-                        },
-                    }
-                );
-                const weatherData = await weatherResponse.json();
-
+        fetchCoordinates(location)
+            .then((coords) => fetchWeather(coords))
+            .then((weatherData) => {
+                setWeather(weatherData);
                 setIsLoading(false);
-                setError("");
-
-                setWeather({
-                    temp: weatherData.temp,
-                    min_temp: weatherData.min_temp,
-                    max_temp: weatherData.max_temp,
-                    feels_like: weatherData.feels_like,
-                    humidity: weatherData.humidity,
-                    wind_speed: weatherData.wind_speed,
-                });
-            } catch (error) {
-                setWeather(null);
-                setError("Error fetching weather data");
+            })
+            .catch((err) => {
+                setError(err.message);
                 setIsLoading(false);
-            }
-        };
-
-        fetchWeatherData();
+            });
     }, [location]);
 
     if (error) {
