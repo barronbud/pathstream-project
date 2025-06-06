@@ -9,12 +9,11 @@ import "./css/App.css";
 const queryClient = new QueryClient();
 
 function App() {
-    const [city, setCity] = useState("");
-    const [country, setCountry] = useState("");
     const [location, setLocation] = useState<Location | null>(null);
 
-    const handleSubmit = (event: React.FormEvent) => {
-        event.preventDefault();
+    const handleSubmit = (formData: FormData) => {
+        const city = formData.get("city") as string;
+        const country = formData.get("country") as string;
         setLocation({ city, country });
     };
 
@@ -23,7 +22,7 @@ function App() {
             <div className="weather-app">
                 <section>
                     <h1>What's it like outside today?</h1>
-                    <form>
+                    <form action={handleSubmit}>
                         <label htmlFor="city">City</label>
                         <input
                             id="city"
@@ -31,8 +30,6 @@ function App() {
                             type="text"
                             required
                             placeholder="City"
-                            value={city}
-                            onChange={(e) => setCity(e.target.value)}
                         />
                         <label htmlFor="country">Country</label>
                         <input
@@ -41,10 +38,8 @@ function App() {
                             type="text"
                             required
                             placeholder="Country"
-                            value={country}
-                            onChange={(e) => setCountry(e.target.value)}
                         />
-                        <button onClick={handleSubmit}>Check my weather</button>
+                        <button>Check my weather</button>
                     </form>
                 </section>
 
