@@ -1,35 +1,42 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import "./css/App.css";
 
 function App() {
-  const [count, setCount] = useState(0)
+    const handleSubmit = (formData: FormData) => {
+        for (const [key, value] of formData.entries()) {
+            console.log(key, value);
+        }
+    };
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    return (
+        <div className="weather-app">
+            <section>
+                <h1>Will It Rain Today?</h1>
+                <form action={handleSubmit}>
+                    <label htmlFor="city">City</label>
+                    <input
+                        id="city"
+                        name="city"
+                        type="text"
+                        required
+                        placeholder="City"
+                    />
+                    <label htmlFor="country">Country</label>
+                    <input
+                        id="country"
+                        name="country"
+                        type="text"
+                        required
+                        placeholder="Country"
+                    />
+                    <button type="submit">Check my weather</button>
+                </form>
+            </section>
+            <aside>
+                <h2>Weather</h2>
+                <p>The weather in city, country is weather</p>
+            </aside>
+        </div>
+    );
 }
 
-export default App
+export default App;
