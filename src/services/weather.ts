@@ -5,9 +5,7 @@ interface Coordinates {
     longitude: number;
 }
 
-export async function fetchCoordinates(
-    location: Location
-): Promise<Coordinates> {
+export async function fetchCoordinates(location: Location): Promise<Coordinates> {
     const response = await fetch(
         `https://api.api-ninjas.com/v1/geocoding?city=${location.city}&country=${location.country}`,
         {

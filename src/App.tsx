@@ -19,21 +19,9 @@ function App() {
                 <h1>What's it like outside today?</h1>
                 <form action={handleSubmit}>
                     <label htmlFor="city">City</label>
-                    <input
-                        id="city"
-                        name="city"
-                        type="text"
-                        required
-                        placeholder="City"
-                    />
+                    <input id="city" name="city" type="text" required placeholder="City" />
                     <label htmlFor="country">Country</label>
-                    <input
-                        id="country"
-                        name="country"
-                        type="text"
-                        required
-                        placeholder="Country"
-                    />
+                    <input id="country" name="country" type="text" required placeholder="Country" />
                     <button>Check my weather</button>
                 </form>
             </section>
